@@ -85,7 +85,6 @@ class TravisBot {
 
     return githubController.getRepoDetails()
     .then((repoDetails) => {
-      console.log('repoDetails: ', repoDetails);
       const cloneUrl = repoDetails.data.clone_url;
       const beforePath = fs.mkdtempSync(TMPDIR_PREFIX);
 
