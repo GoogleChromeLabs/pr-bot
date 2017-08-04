@@ -229,4 +229,14 @@ describe('bot-runner', function() {
       expect(err.message).to.equal(`Unable to get the Github 'repoDetails' from Travis environment variable or the configuration file.`);
     });
   });
+
+  it('should be ok building for local folder and tmp master checkout when run locally', function() {
+    delete process.env['TRAVIS_PULL_REQUEST_SHA'];
+
+    const bot = new TravisBot({
+      configPath: path.join(__dirname, '../static/example-with-plugin.config.js')
+    });
+
+    return bot.run();
+  });
 });
