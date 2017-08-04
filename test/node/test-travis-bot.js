@@ -245,13 +245,14 @@ describe('bot-runner', function() {
     const CustomBotRunner = proxyquire('../../src/controllers/bot-runner.js', {
       './github-controller': FakeGithubController,
       'child_process': {
-        execSync: (command) => {
+        execSync: (command, options) => {
           switch(currentCallNumber) {
             case 0:
               expect(command.indexOf('git clone http://fake-url.from/fake-github-controller /tmp/pr-bot/')).to.equal(0);
               break;
             case 1:
               expect(command).to.equal('git checkout example-base-branch-override');
+              expect(options.cwd.indexOf('/tmp/pr-bot/')).to.equal(0);
               break;
             case 2:
             case 3:

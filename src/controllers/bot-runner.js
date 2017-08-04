@@ -92,7 +92,9 @@ class TravisBot {
       execSync(`git clone ${cloneUrl} ${beforePath}`);
 
       if (configuration.overrideBaseBranch) {
-        execSync(`git checkout ${configuration.overrideBaseBranch}`);
+        execSync(`git checkout ${configuration.overrideBaseBranch}`, {
+          cwd: beforePath
+        });
       }
 
       if (!travisEnv.pullRequestSha) {
