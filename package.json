@@ -9,7 +9,7 @@
   "scripts": {
     "prepublish": "npm run test",
     "test": "_mocha './test/node/**/*.js'",
-    "test-with-coverage": "istanbul cover npm run test --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test-with-coverage": "istanbul cover _mocha './test/node/**/*.js' --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
