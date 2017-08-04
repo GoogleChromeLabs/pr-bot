@@ -37,12 +37,12 @@ to your Github repository).
 1. In this new file add the following:
 
     ```javascript
-    const travisbot = require('pr-bot');
+    const prbot = require('pr-bot');
 
     module.exports = {
       botUsername: `<Add the Github Username for your Bot Account Here>`
       plugins: [
-        new travisbot.plugins.Size({
+        new prbot.plugins.Size({
           globPattern: '**/*.js',
           globOptions: {
             ignore: [

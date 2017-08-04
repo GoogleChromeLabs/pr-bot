@@ -24,7 +24,7 @@ const TMPDIR_PREFIX = `/tmp/pr-bot/`;
 
 class TravisBot {
   constructor({configPath} = {}) {
-    logHelper.setPrimaryPrefix('TravisBot 🤖');
+    logHelper.setPrimaryPrefix('PR-Bot 🤖');
 
     if (!configPath) {
       configPath = path.resolve('pr-bot.config.js')
@@ -178,11 +178,11 @@ class TravisBot {
   }
 
   _logGithubState(configuration, travisEnv, githubController, pluginResults) {
-    let githubComment = `# Results from Plugins\n\n`;
+    let githubComment = ``;
     const pluginNames = Object.keys(pluginResults);
     pluginNames.forEach((pluginName) => {
       const result = pluginResults[pluginName];
-      githubComment += `## ${pluginName}\n\n`;
+      githubComment += `### ${pluginName}\n\n`;
       if (result.markdownLog) {
         githubComment += result.markdownLog;
       } else {

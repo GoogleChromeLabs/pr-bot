@@ -147,7 +147,7 @@ describe('bot-runner', function() {
     const issueStub = sinon.stub(FakeGithubController.prototype, 'postIssueComment').callsFake((input) => {
       expect(input).to.deep.equal({
         number: '123',
-        comment: '# Results from Plugins\n\n## Good Plugin.\n\nThis plugin provided no markdown output.\n\n## Good Plugin 2.\n\n`Hello  from good plugin.`\n\n'
+        comment: '### Good Plugin.\n\nThis plugin provided no markdown output.\n\n### Good Plugin 2.\n\n`Hello  from good plugin.`\n\n',
       });
       return Promise.resolve();
     });
@@ -168,7 +168,7 @@ describe('bot-runner', function() {
     const issueStub = sinon.stub(FakeGithubController.prototype, 'postIssueComment').callsFake((input) => {
       expect(input).to.deep.equal({
         number: '123',
-        comment: '# Results from Plugins\n\n## Good Plugin.\n\nThis plugin provided no markdown output.\n\n## Good Plugin 2.\n\n`Hello  from good plugin.`\n\n'
+        comment: '### Good Plugin.\n\nThis plugin provided no markdown output.\n\n### Good Plugin 2.\n\n`Hello  from good plugin.`\n\n'
       });
       return Promise.resolve();
     });

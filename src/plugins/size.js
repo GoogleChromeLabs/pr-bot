@@ -252,16 +252,18 @@ class SizePlugin extends PluginInterface {
       newTable = 'No new files have been added.';
     }
 
-    return `## Changed File Sizes
+    return `#### Changed File Sizes
 
 ${changedTable}
 
-## New Files
+#### New Files
 
 ${newTable}
 
+#### All File Sizes
+
 <details>
-<summary>All Files</summary>
+<summary>View Table</summary>
 
 ${fullTable}
 

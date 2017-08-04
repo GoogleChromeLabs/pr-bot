@@ -85,7 +85,7 @@ new-file.txt  21 B
 
       console.log(results.markdownLog);
 
-      expect(results.markdownLog).to.equal(`## Changed File Sizes
+      expect(results.markdownLog).to.equal(`#### Changed File Sizes
 
 | File | Before | After | Change |  |
 | --- | --- | --- | --- | --- |
@@ -95,14 +95,16 @@ new-file.txt  21 B
 | minor-change.txt     | 7.126 KB   | 7.125 KB   | -0.01%     | |
 | stays-the-same.txt   | 29 B       | 50 B       | +72.41%    | ☠️ |
 
-## New Files
+#### New Files
 
 | File | Size |
 | --- | --- |
 | new-file.txt | 21 B |
 
+#### All File Sizes
+
 <details>
-<summary>All Files</summary>
+<summary>View Table</summary>
 
 | File | Before | After | Change |  |
 | --- | --- | --- | --- | --- |
@@ -146,16 +148,18 @@ No new files have been added.
 
       console.log(results.markdownLog);
 
-      expect(results.markdownLog).to.equal(`## Changed File Sizes
+      expect(results.markdownLog).to.equal(`#### Changed File Sizes
 
 No file sizes have changed.
 
-## New Files
+#### New Files
 
 No new files have been added.
 
+#### All File Sizes
+
 <details>
-<summary>All Files</summary>
+<summary>View Table</summary>
 
 | File | Before | After | Change |  |
 | --- | --- | --- | --- | --- |
