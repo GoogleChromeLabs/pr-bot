@@ -1,0 +1,36 @@
+{
+  "name": "pr-bot",
+  "version": "0.0.18",
+  "description": "A bot to run after Travis has run it's build's and tests.",
+  "main": "src/npm-module.js",
+  "bin": {
+    "pr-bot": "bin/cli.js"
+  },
+  "scripts": {
+    "prepublish": "npm run test",
+    "test": "istanbul cover _mocha './test/node/**/*.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gauntface/web-devrel-bot.git"
+  },
+  "author": "gauntface",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/gauntface/web-devrel-bot/issues"
+  },
+  "homepage": "https://github.com/gauntface/web-devrel-bot#readme",
+  "dependencies": {
+    "chalk": "^2.0.1",
+    "fs-extra": "^4.0.0",
+    "github": "^9.2.0",
+    "glob": "^7.1.2",
+    "meow": "^3.7.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "istanbul": "^0.4.5",
+    "proxyquire": "^1.8.0",
+    "sinon": "^2.4.1"
+  }
+}
