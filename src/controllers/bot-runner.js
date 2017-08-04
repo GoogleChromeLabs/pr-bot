@@ -91,6 +91,10 @@ class TravisBot {
       logHelper.log(`Cloning default branch into: '${beforePath}'.`);
       execSync(`git clone ${cloneUrl} ${beforePath}`);
 
+      if (configuration.overrideBaseBranch) {
+        execSync(`git checkout ${configuration.overrideBaseBranch}`);
+      }
+
       if (!travisEnv.pullRequestSha) {
         logHelper.warn(`No 'TRAVIS_PULL_REQUEST_SHA' environment variable, ` +
           `so using the current directory for further testing.`);
