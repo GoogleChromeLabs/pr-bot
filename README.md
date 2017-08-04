@@ -142,3 +142,17 @@ And your plugin should:
 
 1. ..resolve the `run` promise with an `object`with `prettyLog`
 and `markdownLog` string parameters.
+
+## Different Base Branch
+
+When developing on a new version, the default branch on Github may not be
+the branch you want to compare PR's (or locally).
+
+You can compare to other branches using the `overrideBaseBranch` config.
+
+```javascript
+module.exports = {
+  overrideBaseBranch: '<name of branch',
+  ...
+};
+```
