@@ -31,7 +31,7 @@ class FakeGithubController {
   }
 }
 
-const TravisBot = proxyquire('../../src/controllers/bot-runner.js', {
+const BotRunner = proxyquire('../../src/controllers/bot-runner.js', {
   './github-controller': FakeGithubController,
   'child_process': {
     execSync: (command) => {
@@ -56,11 +56,11 @@ describe('bot-runner', function() {
   });
 
   it('should instantiate Travis Bot', function() {
-    new TravisBot();
+    new BotRunner();
   });
 
   it('should error when no repo-details in config or travis', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/no-repo-details.config.js')
     });
 
@@ -76,7 +76,7 @@ describe('bot-runner', function() {
   it ('should get repo details from travis', function() {
     process.env['TRAVIS_REPO_SLUG'] = 'gauntface/example-repo';
 
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/no-repo-details.config.js')
     });
 
@@ -84,7 +84,7 @@ describe('bot-runner', function() {
   })
 
   it('should instantiate Travis Bot and print to log', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example.config.js')
     });
 
@@ -97,7 +97,7 @@ describe('bot-runner', function() {
   });
 
   it('should handle no name plugins', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/no-plugin-name.config.js')
     });
 
@@ -110,7 +110,7 @@ describe('bot-runner', function() {
   });
 
   it('should handle bad plugins', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/bad-plugin.config.js')
     });
 
@@ -123,7 +123,7 @@ describe('bot-runner', function() {
   });
 
   it('should handle good custom plugin', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example-with-plugin.config.js')
     });
 
@@ -153,7 +153,7 @@ describe('bot-runner', function() {
     });
     stubs.push(issueStub);
 
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example-with-plugin.config.js')
     });
 
@@ -174,7 +174,7 @@ describe('bot-runner', function() {
     });
     stubs.push(issueStub);
 
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example-with-plugin-no-bot-name.config.js')
     });
 
@@ -184,7 +184,7 @@ describe('bot-runner', function() {
   it('should pull from repo when its a Travis PR', function() {
     process.env['TRAVIS_PULL_REQUEST_SHA'] = '123';
 
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example-with-plugin.config.js')
     });
 
@@ -192,7 +192,7 @@ describe('bot-runner', function() {
   });
 
   it('should handle non-existant config file', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/doesnt-exist.config.js')
     });
 
@@ -205,7 +205,7 @@ describe('bot-runner', function() {
   });
 
   it('should handle throwing config file', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/throwing.config.js')
     });
 
@@ -218,7 +218,7 @@ describe('bot-runner', function() {
   });
 
   it('should handle non-returning config file', function() {
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/non-returning.config.js')
     });
 
@@ -233,10 +233,46 @@ describe('bot-runner', function() {
   it('should be ok building for local folder and tmp master checkout when run locally', function() {
     delete process.env['TRAVIS_PULL_REQUEST_SHA'];
 
-    const bot = new TravisBot({
+    const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example-with-plugin.config.js')
     });
 
     return bot.run();
+  });
+
+  it('should checkout the base branch override', function() {
+    let currentCallNumber = 0;
+    const CustomBotRunner = proxyquire('../../src/controllers/bot-runner.js', {
+      './github-controller': FakeGithubController,
+      'child_process': {
+        execSync: (command) => {
+          switch(currentCallNumber) {
+            case 0:
+              expect(command.indexOf('git clone http://fake-url.from/fake-github-controller /tmp/pr-bot/')).to.equal(0);
+              break;
+            case 1:
+              expect(command).to.equal('git checkout example-base-branch-override');
+              break;
+            case 2:
+            case 3:
+              expect(command).to.equal('gulp example-build-rule');
+              break;
+            default:
+              throw new Error('Unexpected number of execSync calls');
+          }
+          currentCallNumber++;
+        }
+      }
+    });
+
+    const bot = new CustomBotRunner({
+      configPath: path.join(__dirname, '../static/base-branch-override.config.js')
+    });
+    return bot.run()
+    .then(() => {
+      if (currentCallNumber !== 4) {
+        throw new Error('Expected execSync to be called 4 times.');
+      }
+    });
   });
 });

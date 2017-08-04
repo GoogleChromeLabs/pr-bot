@@ -85,11 +85,16 @@ class TravisBot {
 
     return githubController.getRepoDetails()
     .then((repoDetails) => {
+      console.log('repoDetails: ', repoDetails);
       const cloneUrl = repoDetails.data.clone_url;
       const beforePath = fs.mkdtempSync(TMPDIR_PREFIX);
 
       logHelper.log(`Cloning default branch into: '${beforePath}'.`);
       execSync(`git clone ${cloneUrl} ${beforePath}`);
+
+      if (configuration.overrideBaseBranch) {
+        execSync(`git checkout ${configuration.overrideBaseBranch}`);
+      }
 
       if (!travisEnv.pullRequestSha) {
         logHelper.warn(`No 'TRAVIS_PULL_REQUEST_SHA' environment variable, ` +
