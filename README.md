@@ -1,5 +1,7 @@
 # pr-bot
 
+[![Coverage Status](https://coveralls.io/repos/github/GoogleChrome/pr-bot/badge.svg?branch=master)](https://coveralls.io/github/GoogleChrome/pr-bot?branch=master)
+
 This is a small utility to run a set of "plugins"
 against a Pull Request on Travis and then report
 a set of results to Github.
