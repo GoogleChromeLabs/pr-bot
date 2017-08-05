@@ -94,7 +94,7 @@ you define a `buildCommand` parameter in your config file
 to define the command to run in the two checkouts of your project.
 
 ```javascript
-module.exports {
+module.exports = {
   // Custom build command in travis.config.js
   buildCommand: `npm install && gulp`,
 
