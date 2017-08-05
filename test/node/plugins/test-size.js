@@ -70,15 +70,15 @@ describe('plugins.Size', function() {
       expect(cleanLog).to.equal(`
 Changed File Sizes
 ------------------
-content-to-empty.txt  45 B        >  0 B         -100.00%
-dino.jpg              268.633 KB  >  104.004 KB  -61.28%
-empty-to-content.txt  0 B         >  38 B        +Infinity%
-minor-change.txt      7.126 KB    >  7.125 KB    -0.01%
-stays-the-same.txt    29 B        >  50 B        +72.41%
+content-to-empty.txt  45.00 B    >  0.00 B     -100.00%
+dino.jpg              268.63 KB  >  104.00 KB  -61.28%
+empty-to-content.txt  0.00 B     >  38.00 B    +Infinity%
+minor-change.txt      7.13 KB    >  7.13 KB    -0.01%
+stays-the-same.txt    29.00 B    >  50.00 B    +72.41%
 
 New Files
 ---------
-new-file.txt  21 B
+new-file.txt  21.00 B
 `);
 
       expect(results.markdownLog).to.exist;
@@ -89,17 +89,17 @@ new-file.txt  21 B
 
 | File | Before | After | Change |  |
 | --- | --- | --- | --- | --- |
-| content-to-empty.txt | 45 B       | 0 B        | -100.00%   | 🎉 |
-| dino.jpg             | 268.633 KB | 104.004 KB | -61.28%    | 🎉 |
-| empty-to-content.txt | 0 B        | 38 B       | +Infinity% | ☠️ |
-| minor-change.txt     | 7.126 KB   | 7.125 KB   | -0.01%     | |
-| stays-the-same.txt   | 29 B       | 50 B       | +72.41%    | ☠️ |
+| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 🎉 |
+| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | ☠️ |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | |
+| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | ☠️ |
 
 #### New Files
 
 | File | Size |
 | --- | --- |
-| new-file.txt | 21 B |
+| new-file.txt | 21.00 B |
 
 #### All File Sizes
 
@@ -108,13 +108,13 @@ new-file.txt  21 B
 
 | File | Before | After | Change |  |
 | --- | --- | --- | --- | --- |
-| content-to-empty.txt | 45 B       | 0 B        | -100.00%   | 🎉 |
-| dino.jpg             | 268.633 KB | 104.004 KB | -61.28%    | 🎉 |
-| empty-to-content.txt | 0 B        | 38 B       | +Infinity% | ☠️ |
-| empty.txt            | 0 B        | 0 B        |            | |
-| minor-change.txt     | 7.126 KB   | 7.125 KB   | -0.01%     | |
-| new-file.txt         |            | 21 B       |            | |
-| stays-the-same.txt   | 29 B       | 50 B       | +72.41%    | ☠️ |
+| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 🎉 |
+| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | ☠️ |
+| empty.txt            | 0.00 B    | 0.00 B    |            | |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | |
+| new-file.txt         |           | 21.00 B   |            | |
+| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | ☠️ |
 
 </details>`);
     });
@@ -163,13 +163,13 @@ No new files have been added.
 
 | File | Before | After | Change |  |
 | --- | --- | --- | --- | --- |
-| content-to-empty.txt | 0 B        | 0 B        |       | |
-| dino.jpg             | 104.004 KB | 104.004 KB | 0.00% | |
-| empty-to-content.txt | 38 B       | 38 B       | 0.00% | |
-| empty.txt            | 0 B        | 0 B        |       | |
-| minor-change.txt     | 7.125 KB   | 7.125 KB   | 0.00% | |
-| new-file.txt         | 21 B       | 21 B       | 0.00% | |
-| stays-the-same.txt   | 50 B       | 50 B       | 0.00% | |
+| content-to-empty.txt | 0.00 B    | 0.00 B    |       | |
+| dino.jpg             | 104.00 KB | 104.00 KB | 0.00% | |
+| empty-to-content.txt | 38.00 B   | 38.00 B   | 0.00% | |
+| empty.txt            | 0.00 B    | 0.00 B    |       | |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | 0.00% | |
+| new-file.txt         | 21.00 B   | 21.00 B   | 0.00% | |
+| stays-the-same.txt   | 50.00 B   | 50.00 B   | 0.00% | |
 
 </details>`);
     });
