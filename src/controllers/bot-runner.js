@@ -127,12 +127,22 @@ class TravisBot {
 
       logHelper.log(`Building before and after versions with: '${buildCommand}'.`);
 
-      execSync(buildCommand, {
-        cwd: beforePath,
-      });
-      execSync(buildCommand, {
-        cwd: afterPath,
-      });
+      try {
+        execSync(buildCommand, {
+          cwd: beforePath,
+        });
+      } catch (err) {
+        logHelper.error(`Unable to run '${buildCommand}' in the "before" version.`);
+      }
+
+      try {
+        execSync(buildCommand, {
+          cwd: afterPath,
+        });
+      } catch (err) {
+        logHelper.error(`Unable to run '${buildCommand}' in the "after" version.`);
+        throw err;
+      }
 
       return {beforePath, afterPath};
     });

@@ -160,11 +160,14 @@ class SizePlugin extends PluginInterface {
         }
       let percentString = percentChangeColor(`${prefix}${prettyFloat}%`);
 
+      const prevSize = parseFloat(prevSizeDetails.size).toFixed(2);
+      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+
       return [
         chalk.yellow(fileInfo.relativePath),
-        chalk.dim(`${prevSizeDetails.size} ${prevSizeDetails.unit}`),
+        chalk.dim(`${prevSize} ${prevSizeDetails.unit}`),
         chalk.dim(`>`),
-        chalk.blue(`${newSizeDetails.size} ${newSizeDetails.unit}`),
+        chalk.blue(`${newSize} ${newSizeDetails.unit}`),
         percentString
       ];
     });
@@ -176,9 +179,11 @@ class SizePlugin extends PluginInterface {
     let newFileRows = newFileInfo.map((fileInfo) => {
       const newSizeDetails = SizePlugin._convertSize(fileInfo.sizeInBytes);
 
+      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+
       return [
         chalk.yellow(fileInfo.relativePath),
-        chalk.blue(`${newSizeDetails.size} ${newSizeDetails.unit}`),
+        chalk.blue(`${newSize} ${newSizeDetails.unit}`),
       ];
     });
 
@@ -234,9 +239,11 @@ class SizePlugin extends PluginInterface {
     let newFileRows = newFileInfo.map((fileInfo) => {
       const newSizeDetails = SizePlugin._convertSize(fileInfo.sizeInBytes);
 
+      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+
       return [
         fileInfo.relativePath,
-        `${newSizeDetails.size} ${newSizeDetails.unit}`,
+        `${newSize} ${newSizeDetails.unit}`,
       ];
     });
 
@@ -279,10 +286,10 @@ ${fullTable}
       if (!isNaN(fileInfo.sizeDifferencePercent)) {
         let prettyFloat = parseFloat(fileInfo.sizeDifferencePercent * 100)
           .toFixed(2);
-          let prefix = '';
-          if (fileInfo.sizeDifferencePercent > 0) {
-            prefix = '+';
-          }
+        let prefix = '';
+        if (fileInfo.sizeDifferencePercent > 0) {
+          prefix = '+';
+        }
         percentString = `${prefix}${prettyFloat}%`;
       }
 
@@ -293,10 +300,12 @@ ${fullTable}
         emoji = '🎉';
       }
 
+      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+
       return [
         fileInfo.relativePath,
-        prevSizeDetails ? `${prevSizeDetails.size} ${prevSizeDetails.unit}` : '',
-        `${newSizeDetails.size} ${newSizeDetails.unit}`,
+        prevSizeDetails ? `${parseFloat(prevSizeDetails.size).toFixed(2)} ${prevSizeDetails.unit}` : '',
+        `${newSize} ${newSizeDetails.unit}`,
         percentString,
         emoji
       ];
