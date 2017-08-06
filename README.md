@@ -4,20 +4,20 @@
 
 This is a small utility to run a set of "plugins"
 against a Pull Request on Travis and then report
-a set of results to Github.
+a set of results to GitHub.
 
 ## Getting Started
 
 To use `pr-bot` you'll need to set up a few
 things:
 
-1. Create a Github account to use for bot
+1. Create a GitHub account to use for bot
 activity. This will be the account login and
 profile photo that you'll see when the bot
 comments on a pull request.
 
 1. [Create a personal access token for the
-Github bot account](https://github.com/settings/tokens).
+GitHub bot account](https://github.com/settings/tokens).
 
 1. In the Travis settings for your repository,
 set the personal access token as an environment
@@ -34,7 +34,7 @@ project:
 
 1. Create a file called `pr-bot.config.js` at the
 root of your project (i.e. this file needs to be commited
-to your Github repository).
+to your GitHub repository).
 
 1. In this new file add the following:
 
@@ -42,7 +42,7 @@ to your Github repository).
     const prbot = require('pr-bot');
 
     module.exports = {
-      botUsername: `<Add the Github Username for your Bot Account Here>`
+      botUsername: `<Add the GitHub Username for your Bot Account Here>`
       plugins: [
         new prbot.plugins.Size({
           globPattern: '**/*.js',
@@ -98,7 +98,7 @@ you define a `buildCommand` parameter in your config file
 to define the command to run in the two checkouts of your project.
 
 ```javascript
-module.exports {
+module.exports = {
   // Custom build command in travis.config.js
   buildCommand: `npm install && gulp`,
 
@@ -129,7 +129,7 @@ files or anything else they want.
 Plugins are expected to return a `promise` that resolves to an `object`
 with a `prettyLog` parameter and a `markdownLog` parameter. The
 `prettyLog` is used to display plugin output to the console and
-`markdownLog` is used to print to the Github comment raised against
+`markdownLog` is used to print to the GitHub comment raised against
 the Pull Request.
 
 ## Adding Custom Plugins
@@ -149,7 +149,7 @@ and `markdownLog` string parameters.
 
 ## Different Base Branch
 
-When developing on a new version, the default branch on Github may not be
+When developing on a new version, the default branch on GitHub may not be
 the branch you want to compare PR's (or locally).
 
 You can compare to other branches using the `overrideBaseBranch` config.
