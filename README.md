@@ -67,6 +67,8 @@ to your Github repository).
 Now you can commit your code and if everything is set up correctly, you'll
 see comments from your bot account.
 
+![Example output from Size Plugin from pr-bot](http://i.imgur.com/oZPrdXr.png)
+
 ### Running Locally
 
 You can see what `pr-bot` will do locally with the following:
@@ -78,6 +80,8 @@ pr-bot
 
 This is useful if you want to see the file differences without
 waiting on Travis.
+
+![Example console output from Size Plugin from pr-bot](http://i.imgur.com/h518U9O.png)
 
 ### Customising Config Path
 
