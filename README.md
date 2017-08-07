@@ -6,6 +6,8 @@ This is a small utility to run a set of "plugins"
 against a Pull Request on Travis and then report
 a set of results to GitHub.
 
+![Example PR-Bot Output](http://i.imgur.com/QMOaiQy.png)
+
 ## Getting Started
 
 To use `pr-bot` you'll need to set up a few
