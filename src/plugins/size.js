@@ -17,6 +17,7 @@ const glob = require('glob');
 const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
+const gzipSize = require('gzip-size');
 
 const PluginInterface = require('./plugin-interface');
 const POSITIVE_EMOJI = '✅';
@@ -101,10 +102,13 @@ class SizePlugin extends PluginInterface {
         return promiseChain.then((fileInfo) => {
           return fs.stat(filePath)
           .then((stats) => {
+            const fileContents = fs.readFileSync(filePath);
+            const gzippedSize = gzipSize.sync(fileContents);
             const relativePath = path.relative(directory, filePath);
             fileInfo[relativePath] = {
               relativePath,
-              sizeInBytes: stats.size
+              sizeInBytes: stats.size,
+              gzipSizeInBytes: gzippedSize,
             };
             return fileInfo;
           });
@@ -217,6 +221,7 @@ class SizePlugin extends PluginInterface {
       'Before',
       'After',
       'Change',
+      'GZipped',
       ''
     ];
 
@@ -230,6 +235,7 @@ class SizePlugin extends PluginInterface {
     let newHeadings = [
       'File',
       'Size',
+      'GZipped'
     ];
 
     let newFileInfo = allFileInfo.filter((fileInfo) => {
@@ -238,12 +244,15 @@ class SizePlugin extends PluginInterface {
 
     let newFileRows = newFileInfo.map((fileInfo) => {
       const newSizeDetails = SizePlugin._convertSize(fileInfo.sizeInBytes);
+      const newGZipDetails = SizePlugin._convertSize(fileInfo.gzipSizeInBytes);
 
       const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+      const newGzipSize = parseFloat(newGZipDetails.size).toFixed(2);
 
       return [
         fileInfo.relativePath,
         `${newSize} ${newSizeDetails.unit}`,
+        `${newGzipSize} ${newGZipDetails.unit}`
       ];
     });
 
@@ -280,6 +289,7 @@ ${fullTable}
   _getMDFileRows(fileDetails) {
     return fileDetails.map((fileInfo) => {
       const newSizeDetails = SizePlugin._convertSize(fileInfo.sizeInBytes);
+      const newGzipDetails = SizePlugin._convertSize(fileInfo.gzipSizeInBytes);
       const prevSizeDetails = SizePlugin._convertSize(fileInfo.previousSize);
 
       let percentString = '';
@@ -301,12 +311,14 @@ ${fullTable}
       }
 
       const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+      const newGzipSize = parseFloat(newGzipDetails.size).toFixed(2);
 
       return [
         fileInfo.relativePath,
         prevSizeDetails ? `${parseFloat(prevSizeDetails.size).toFixed(2)} ${prevSizeDetails.unit}` : '',
         `${newSize} ${newSizeDetails.unit}`,
         percentString,
+        `${newGzipSize} ${newGzipDetails.unit}`,
         emoji
       ];
     });
