@@ -87,34 +87,34 @@ new-file.txt  21.00 B
 
       expect(results.markdownLog).to.equal(`#### Changed File Sizes
 
-| File | Before | After | Change |  |
-| --- | --- | --- | --- | --- |
-| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 🎉 |
-| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 🎉 |
-| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | ☠️ |
-| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | |
-| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | ☠️ |
+| File | Before | After | Change | GZipped |  |
+| --- | --- | --- | --- | --- | --- |
+| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 20.00 B   | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 103.24 KB | 🎉 |
+| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | 56.00 B   | ☠️ |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | 2.52 KB   | |
+| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | 67.00 B   | ☠️ |
 
 #### New Files
 
-| File | Size |
-| --- | --- |
-| new-file.txt | 21.00 B |
+| File | Size | GZipped |
+| --- | --- | --- |
+| new-file.txt | 21.00 B | 41.00 B |
 
 #### All File Sizes
 
 <details>
 <summary>View Table</summary>
 
-| File | Before | After | Change |  |
-| --- | --- | --- | --- | --- |
-| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 🎉 |
-| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 🎉 |
-| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | ☠️ |
-| empty.txt            | 0.00 B    | 0.00 B    |            | |
-| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | |
-| new-file.txt         |           | 21.00 B   |            | |
-| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | ☠️ |
+| File | Before | After | Change | GZipped |  |
+| --- | --- | --- | --- | --- | --- |
+| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 20.00 B   | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 103.24 KB | 🎉 |
+| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | 56.00 B   | ☠️ |
+| empty.txt            | 0.00 B    | 0.00 B    |            | 20.00 B   | |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | 2.52 KB   | |
+| new-file.txt         |           | 21.00 B   |            | 41.00 B   | |
+| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | 67.00 B   | ☠️ |
 
 </details>`);
     });
@@ -161,15 +161,15 @@ No new files have been added.
 <details>
 <summary>View Table</summary>
 
-| File | Before | After | Change |  |
-| --- | --- | --- | --- | --- |
-| content-to-empty.txt | 0.00 B    | 0.00 B    |       | |
-| dino.jpg             | 104.00 KB | 104.00 KB | 0.00% | |
-| empty-to-content.txt | 38.00 B   | 38.00 B   | 0.00% | |
-| empty.txt            | 0.00 B    | 0.00 B    |       | |
-| minor-change.txt     | 7.13 KB   | 7.13 KB   | 0.00% | |
-| new-file.txt         | 21.00 B   | 21.00 B   | 0.00% | |
-| stays-the-same.txt   | 50.00 B   | 50.00 B   | 0.00% | |
+| File | Before | After | Change | GZipped |  |
+| --- | --- | --- | --- | --- | --- |
+| content-to-empty.txt | 0.00 B    | 0.00 B    |       | 20.00 B   | |
+| dino.jpg             | 104.00 KB | 104.00 KB | 0.00% | 103.24 KB | |
+| empty-to-content.txt | 38.00 B   | 38.00 B   | 0.00% | 56.00 B   | |
+| empty.txt            | 0.00 B    | 0.00 B    |       | 20.00 B   | |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | 0.00% | 2.52 KB   | |
+| new-file.txt         | 21.00 B   | 21.00 B   | 0.00% | 41.00 B   | |
+| stays-the-same.txt   | 50.00 B   | 50.00 B   | 0.00% | 67.00 B   | |
 
 </details>`);
     });
