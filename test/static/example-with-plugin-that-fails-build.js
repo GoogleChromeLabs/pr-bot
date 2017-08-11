@@ -23,20 +23,12 @@ module.exports = {
   },
   plugins: [
     {
-      name: 'Good Plugin.',
+      name: 'Good Plugin that will fail build.',
       run: () => {
         return Promise.resolve({
-
-        });
-      },
-    },
-    {
-      name: 'Good Plugin 2.',
-      run: () => {
-        return Promise.resolve({
-          failPR: false,
-          prettyLog: 'Hello from good plugin.',
-          markdownLog: '`Hello  from good plugin.`'
+          failPR: true,
+          prettyLog: 'Hello from failing build plugin.',
+          markdownLog: '`Hello  from failing build plugin.`'
         });
       },
     }
