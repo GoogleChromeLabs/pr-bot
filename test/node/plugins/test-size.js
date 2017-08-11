@@ -18,6 +18,7 @@ const sinon = require('sinon');
 const path = require('path');
 const proxyquire = require('proxyquire');
 const SizePlugin = require('../../../src/plugins/size');
+const UNITS = require('../../../src/models/units');
 
 describe('plugins.Size', function() {
   it('should get name', function() {
@@ -70,15 +71,15 @@ describe('plugins.Size', function() {
       expect(cleanLog).to.equal(`
 Changed File Sizes
 ------------------
-content-to-empty.txt  45.00 B    >  0.00 B     -100.00%
-dino.jpg              268.63 KB  >  104.00 KB  -61.28%
-empty-to-content.txt  0.00 B     >  38.00 B    +Infinity%
-minor-change.txt      7.13 KB    >  7.13 KB    -0.01%
-stays-the-same.txt    29.00 B    >  50.00 B    +72.41%
+content-to-empty.txt  45 B       >  0 B        -100%
+dino.jpg              268.63 KB  >  104.00 KB  -61%
+empty-to-content.txt  0 B        >  38 B       +Infinity%
+minor-change.txt      7.13 KB    >  7.13 KB    -0%
+stays-the-same.txt    29 B       >  50 B       +72%
 
 New Files
 ---------
-new-file.txt  21.00 B
+new-file.txt  21 B
 `);
 
       expect(results.markdownLog).to.exist;
@@ -89,17 +90,17 @@ new-file.txt  21.00 B
 
 | File | Before | After | Change | GZipped |  |
 | --- | --- | --- | --- | --- | --- |
-| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 20.00 B   | 🎉 |
-| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 103.24 KB | 🎉 |
-| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | 56.00 B   | ☠️ |
-| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | 2.52 KB   | |
-| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | 67.00 B   | ☠️ |
+| content-to-empty.txt | 45 B      | 0 B       | -100%      | 20 B      | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61%       | 103.24 KB | 🎉 |
+| empty-to-content.txt | 0 B       | 38 B      | +Infinity% | 56 B      | ☠️ |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0%        | 2.52 KB   | |
+| stays-the-same.txt   | 29 B      | 50 B      | +72%       | 67 B      | ☠️ |
 
 #### New Files
 
 | File | Size | GZipped |
 | --- | --- | --- |
-| new-file.txt | 21.00 B | 41.00 B |
+| new-file.txt | 21 B | 41 B |
 
 #### All File Sizes
 
@@ -108,13 +109,13 @@ new-file.txt  21.00 B
 
 | File | Before | After | Change | GZipped |  |
 | --- | --- | --- | --- | --- | --- |
-| content-to-empty.txt | 45.00 B   | 0.00 B    | -100.00%   | 20.00 B   | 🎉 |
-| dino.jpg             | 268.63 KB | 104.00 KB | -61.28%    | 103.24 KB | 🎉 |
-| empty-to-content.txt | 0.00 B    | 38.00 B   | +Infinity% | 56.00 B   | ☠️ |
-| empty.txt            | 0.00 B    | 0.00 B    |            | 20.00 B   | |
-| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0.01%     | 2.52 KB   | |
-| new-file.txt         |           | 21.00 B   |            | 41.00 B   | |
-| stays-the-same.txt   | 29.00 B   | 50.00 B   | +72.41%    | 67.00 B   | ☠️ |
+| content-to-empty.txt | 45 B      | 0 B       | -100%      | 20 B      | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61%       | 103.24 KB | 🎉 |
+| empty-to-content.txt | 0 B       | 38 B      | +Infinity% | 56 B      | ☠️ |
+| empty.txt            | 0 B       | 0 B       |            | 20 B      | |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0%        | 2.52 KB   | |
+| new-file.txt         |           | 21 B      |            | 41 B      | |
+| stays-the-same.txt   | 29 B      | 50 B      | +72%       | 67 B      | ☠️ |
 
 </details>`);
     });
@@ -163,13 +164,13 @@ No new files have been added.
 
 | File | Before | After | Change | GZipped |  |
 | --- | --- | --- | --- | --- | --- |
-| content-to-empty.txt | 0.00 B    | 0.00 B    |       | 20.00 B   | |
-| dino.jpg             | 104.00 KB | 104.00 KB | 0.00% | 103.24 KB | |
-| empty-to-content.txt | 38.00 B   | 38.00 B   | 0.00% | 56.00 B   | |
-| empty.txt            | 0.00 B    | 0.00 B    |       | 20.00 B   | |
-| minor-change.txt     | 7.13 KB   | 7.13 KB   | 0.00% | 2.52 KB   | |
-| new-file.txt         | 21.00 B   | 21.00 B   | 0.00% | 41.00 B   | |
-| stays-the-same.txt   | 50.00 B   | 50.00 B   | 0.00% | 67.00 B   | |
+| content-to-empty.txt | 0 B       | 0 B       |    | 20 B      | |
+| dino.jpg             | 104.00 KB | 104.00 KB | 0% | 103.24 KB | |
+| empty-to-content.txt | 38 B      | 38 B      | 0% | 56 B      | |
+| empty.txt            | 0 B       | 0 B       |    | 20 B      | |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | 0% | 2.52 KB   | |
+| new-file.txt         | 21 B      | 21 B      | 0% | 41 B      | |
+| stays-the-same.txt   | 50 B      | 50 B      | 0% | 67 B      | |
 
 </details>`);
     });
@@ -179,7 +180,7 @@ No new files have been added.
     const result = SizePlugin._convertSize(1000);
     expect(result).to.deep.equal({
       size: 1,
-      unit: 'KB',
+      unit: UNITS.KILOBYTE,
     });
   });
 
@@ -187,7 +188,7 @@ No new files have been added.
     const result = SizePlugin._convertSize(1500);
     expect(result).to.deep.equal({
       size: 1.5,
-      unit: 'KB',
+      unit: UNITS.KILOBYTE,
     });
   });
 
@@ -195,7 +196,7 @@ No new files have been added.
     const result = SizePlugin._convertSize(1000000);
     expect(result).to.deep.equal({
       size: 1,
-      unit: 'MB',
+      unit: UNITS.MEGABYTE,
     });
   });
 
@@ -203,7 +204,7 @@ No new files have been added.
     const result = SizePlugin._convertSize(1500000);
     expect(result).to.deep.equal({
       size: 1.5,
-      unit: 'MB',
+      unit: UNITS.MEGABYTE,
     });
   });
 });
