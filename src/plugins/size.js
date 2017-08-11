@@ -20,6 +20,8 @@ const chalk = require('chalk');
 const gzipSize = require('gzip-size');
 
 const PluginInterface = require('./plugin-interface');
+const UNITS = require('../models/units');
+
 const POSITIVE_EMOJI = '✅';
 const NEGATIVE_EMOJI = '🚫';
 
@@ -123,13 +125,13 @@ class SizePlugin extends PluginInterface {
     }
 
     let fileSize = sizeInBytes;
-    let unit = 'B';
+    let unit = UNITS.BYTE;
     if (fileSize >= 1000) {
-      unit = 'KB';
+      unit = UNITS.KILOBYTE;
       fileSize = fileSize / 1000;
 
       if (fileSize >= 1000) {
-        unit = 'MB';
+        unit = UNITS.MEGABYTE;
         fileSize = fileSize / 1000;
       }
     }
@@ -157,21 +159,23 @@ class SizePlugin extends PluginInterface {
       }
 
       let prettyFloat = parseFloat(fileInfo.sizeDifferencePercent * 100)
-        .toFixed(2);
+        .toFixed(0);
         let prefix = '';
         if (fileInfo.sizeDifferencePercent > 0) {
           prefix = '+';
         }
       let percentString = percentChangeColor(`${prefix}${prettyFloat}%`);
 
-      const prevSize = parseFloat(prevSizeDetails.size).toFixed(2);
-      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+      const prevSize = parseFloat(prevSizeDetails.size).toFixed(
+        prevSizeDetails.unit.decimalPlaces);
+      const newSize = parseFloat(newSizeDetails.size).toFixed(
+        newSizeDetails.unit.decimalPlaces);
 
       return [
         chalk.yellow(fileInfo.relativePath),
-        chalk.dim(`${prevSize} ${prevSizeDetails.unit}`),
+        chalk.dim(`${prevSize} ${prevSizeDetails.unit.display}`),
         chalk.dim(`>`),
-        chalk.blue(`${newSize} ${newSizeDetails.unit}`),
+        chalk.blue(`${newSize} ${newSizeDetails.unit.display}`),
         percentString
       ];
     });
@@ -183,11 +187,12 @@ class SizePlugin extends PluginInterface {
     let newFileRows = newFileInfo.map((fileInfo) => {
       const newSizeDetails = SizePlugin._convertSize(fileInfo.sizeInBytes);
 
-      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
+      const newSize = parseFloat(newSizeDetails.size).toFixed(
+        newSizeDetails.unit.decimalPlaces);
 
       return [
         chalk.yellow(fileInfo.relativePath),
-        chalk.blue(`${newSize} ${newSizeDetails.unit}`),
+        chalk.blue(`${newSize} ${newSizeDetails.unit.display}`),
       ];
     });
 
@@ -203,12 +208,12 @@ class SizePlugin extends PluginInterface {
     }
 
     const changedTitle = 'Changed File Sizes';
-    const changedTitleBar = '-'.repeat(changedTitle.length)
+    const changedTitleBar = '-'.repeat(changedTitle.length);
     const allChangedTable = [changedTitle, changedTitleBar, changedTable]
       .join('\n');
 
     const newTitle = 'New Files';
-    const newTitleBar = '-'.repeat(newTitle.length)
+    const newTitleBar = '-'.repeat(newTitle.length);
     const allNewTable = [newTitle, newTitleBar, newTable]
       .join('\n');
 
@@ -246,13 +251,15 @@ class SizePlugin extends PluginInterface {
       const newSizeDetails = SizePlugin._convertSize(fileInfo.sizeInBytes);
       const newGZipDetails = SizePlugin._convertSize(fileInfo.gzipSizeInBytes);
 
-      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
-      const newGzipSize = parseFloat(newGZipDetails.size).toFixed(2);
+      const newSize = parseFloat(newSizeDetails.size).toFixed(
+        newSizeDetails.unit.decimalPlaces);
+      const newGzipSize = parseFloat(newGZipDetails.size).toFixed(
+        newGZipDetails.unit.decimalPlaces);
 
       return [
         fileInfo.relativePath,
-        `${newSize} ${newSizeDetails.unit}`,
-        `${newGzipSize} ${newGZipDetails.unit}`
+        `${newSize} ${newSizeDetails.unit.display}`,
+        `${newGzipSize} ${newGZipDetails.unit.display}`
       ];
     });
 
@@ -295,7 +302,7 @@ ${fullTable}
       let percentString = '';
       if (!isNaN(fileInfo.sizeDifferencePercent)) {
         let prettyFloat = parseFloat(fileInfo.sizeDifferencePercent * 100)
-          .toFixed(2);
+          .toFixed(0);
         let prefix = '';
         if (fileInfo.sizeDifferencePercent > 0) {
           prefix = '+';
@@ -310,15 +317,17 @@ ${fullTable}
         emoji = '🎉';
       }
 
-      const newSize = parseFloat(newSizeDetails.size).toFixed(2);
-      const newGzipSize = parseFloat(newGzipDetails.size).toFixed(2);
+      const newSize = parseFloat(newSizeDetails.size).toFixed(
+        newSizeDetails.unit.decimalPlaces);
+      const newGzipSize = parseFloat(newGzipDetails.size).toFixed(
+        newGzipDetails.unit.decimalPlaces);
 
       return [
         fileInfo.relativePath,
-        prevSizeDetails ? `${parseFloat(prevSizeDetails.size).toFixed(2)} ${prevSizeDetails.unit}` : '',
-        `${newSize} ${newSizeDetails.unit}`,
+        prevSizeDetails ? `${parseFloat(prevSizeDetails.size).toFixed(prevSizeDetails.unit.decimalPlaces)} ${prevSizeDetails.unit.display}` : '',
+        `${newSize} ${newSizeDetails.unit.display}`,
         percentString,
-        `${newGzipSize} ${newGzipDetails.unit}`,
+        `${newGzipSize} ${newGzipDetails.unit.display}`,
         emoji
       ];
     });
