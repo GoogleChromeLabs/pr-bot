@@ -141,13 +141,34 @@ You can build custom plugins, the key things to note are:
 Your plugin must:
 
 1. ..have a `name` property.
-1. ..have a `run` method.
+1. ..have a `run` method with a signature of
+   `run({beforePath, afterPath} = {})`.
 1. ..return a Promise from the `run` method.
 
 And your plugin should:
 
 1. ..resolve the `run` promise with an `object`with `prettyLog`
-and `markdownLog` string parameters.
+and `markdownLog` string parameters to print out info and if you wish
+to mark the Pull Request as a bad PR (set status to failure), you can return
+the parameter `failPR` with `true`.
+
+A basic plugin can look like this:
+
+```javascript
+{
+  name: 'Example Plugin',
+  run: () => {
+    return Promise.resolve({
+      failPR: false,
+      prettyLog: 'Hello from example plugin.',
+      markdownLog: '## Hello from example plugin.'
+    });
+  },
+}
+```
+
+If you want, your custom plugin can also extend the `PluginInterface` from the
+module with `const PluginInterface = require('pr-bot').PluginInterface;`.
 
 ## Different Base Branch
 

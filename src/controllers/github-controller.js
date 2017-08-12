@@ -57,8 +57,8 @@ class GithubController {
       repo: this._repo,
       sha: sha,
       state,
-      context: 'Travis Bot',
-      description: 'Travis Bot is a basic helper to report and enforce rules ' +
+      context: 'PR-Bot',
+      description: 'PR-Bot is a simple helper to report and enforce rules ' +
         'on a Github Pull Request.'
     });
   }

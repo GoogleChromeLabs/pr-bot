@@ -134,6 +134,7 @@ describe('bot-runner', function() {
     process.env['TRAVIS'] = 'true';
     process.env['TRAVIS_EVENT_TYPE'] = 'pull_request';
     process.env['TRAVIS_PULL_REQUEST'] = '123';
+    process.env['TRAVIS_PULL_REQUEST_SHA'] = 'ABCSHA';
 
     const deleteStub = sinon.stub(FakeGithubController.prototype, 'deletePreviousIssueComments').callsFake((input) => {
       expect(input).to.deep.equal({
@@ -143,6 +144,15 @@ describe('bot-runner', function() {
       return Promise.resolve();
     });
     stubs.push(deleteStub);
+
+    const stateStub = sinon.stub(FakeGithubController.prototype, 'postState').callsFake((input) => {
+      expect(input).to.deep.equal({
+        sha: 'ABCSHA',
+        state: 'success'
+      });
+      return Promise.resolve();
+    });
+    stubs.push(stateStub);
 
     const issueStub = sinon.stub(FakeGithubController.prototype, 'postIssueComment').callsFake((input) => {
       expect(input).to.deep.equal({
@@ -164,6 +174,16 @@ describe('bot-runner', function() {
     process.env['TRAVIS'] = 'true';
     process.env['TRAVIS_EVENT_TYPE'] = 'pull_request';
     process.env['TRAVIS_PULL_REQUEST'] = '123';
+    process.env['TRAVIS_PULL_REQUEST_SHA'] = 'ABCSHA';
+
+    const stateStub = sinon.stub(FakeGithubController.prototype, 'postState').callsFake((input) => {
+      expect(input).to.deep.equal({
+        sha: 'ABCSHA',
+        state: 'success'
+      });
+      return Promise.resolve();
+    });
+    stubs.push(stateStub);
 
     const issueStub = sinon.stub(FakeGithubController.prototype, 'postIssueComment').callsFake((input) => {
       expect(input).to.deep.equal({
@@ -176,6 +196,46 @@ describe('bot-runner', function() {
 
     const bot = new BotRunner({
       configPath: path.join(__dirname, '../static/example-with-plugin-no-bot-name.config.js')
+    });
+
+    return bot.run();
+  });
+
+  it('should fail the PR', function() {
+    process.env['TRAVIS'] = 'true';
+    process.env['TRAVIS_EVENT_TYPE'] = 'pull_request';
+    process.env['TRAVIS_PULL_REQUEST'] = '123';
+    process.env['TRAVIS_PULL_REQUEST_SHA'] = 'ABCSHA';
+
+    const deleteStub = sinon.stub(FakeGithubController.prototype, 'deletePreviousIssueComments').callsFake((input) => {
+      expect(input).to.deep.equal({
+        number: '123',
+        botName: 'test-bot'
+      });
+      return Promise.resolve();
+    });
+    stubs.push(deleteStub);
+
+    const stateStub = sinon.stub(FakeGithubController.prototype, 'postState').callsFake((input) => {
+      expect(input).to.deep.equal({
+        sha: 'ABCSHA',
+        state: 'failure'
+      });
+      return Promise.resolve();
+    });
+    stubs.push(stateStub);
+
+    const issueStub = sinon.stub(FakeGithubController.prototype, 'postIssueComment').callsFake((input) => {
+      expect(input).to.deep.equal({
+        number: '123',
+        comment: '### Good Plugin that will fail build.\n\n`Hello  from failing build plugin.`\n\n',
+      });
+      return Promise.resolve();
+    });
+    stubs.push(issueStub);
+
+    const bot = new BotRunner({
+      configPath: path.join(__dirname, '../static/example-with-plugin-that-fails-build.js')
     });
 
     return bot.run();

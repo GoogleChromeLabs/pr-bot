@@ -195,6 +195,7 @@ class TravisBot {
 
   _logGithubState(configuration, travisEnv, githubController, pluginResults) {
     let githubComment = ``;
+    let failPR = false;
     const pluginNames = Object.keys(pluginResults);
     pluginNames.forEach((pluginName) => {
       const result = pluginResults[pluginName];
@@ -205,6 +206,10 @@ class TravisBot {
         githubComment += `This plugin provided no markdown output.`;
       }
       githubComment += `\n\n`;
+
+      if (result.failPR) {
+        failPR = true;
+      }
     });
 
     let deletePromise = Promise.resolve();
@@ -221,6 +226,12 @@ class TravisBot {
         number: travisEnv.pullRequestNumber,
         comment: githubComment,
       });
+    })
+    .then(() => {
+      return githubController.postState({
+        sha: travisEnv.pullRequestSha,
+        state: failPR ? 'failure' : 'success'
+      })
     });
   }
 }
