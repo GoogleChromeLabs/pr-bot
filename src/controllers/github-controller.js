@@ -58,8 +58,7 @@ class GithubController {
       sha: sha,
       state,
       context: 'PR-Bot',
-      description: 'PR-Bot is a simple helper to report and enforce rules ' +
-        'on a Github Pull Request.'
+      description: 'All PR-Bot plugins passed the build.'
     });
   }
 
