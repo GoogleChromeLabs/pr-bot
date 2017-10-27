@@ -44,7 +44,7 @@ to your GitHub repository).
     const prbot = require('pr-bot');
 
     module.exports = {
-      botUsername: `<Add the GitHub Username for your Bot Account Here>`
+      botUsername: `<Add the GitHub Username for your Bot Account Here>`,
       plugins: [
         new prbot.plugins.Size({
           globPattern: '**/*.js',
