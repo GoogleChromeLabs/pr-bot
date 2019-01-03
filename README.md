@@ -18,8 +18,15 @@ activity. This will be the account login and
 profile photo that you'll see when the bot
 comments on a pull request.
 
+1. Add the GitHub bot account to your project as a collaborator.
+`https://github.com/<owner>/<repo>/settings/collaboration`.
+Be sure to accept the invite email! This will enable the bot
+to set PR statuses.
+
 1. [Create a personal access token for the
 GitHub bot account](https://github.com/settings/tokens).
+The access token must at least have the `public_repo` scope
+enabled.
 
 1. In the Travis settings for your repository,
 set the personal access token as an environment
@@ -45,6 +52,10 @@ to your GitHub repository).
 
     module.exports = {
       botUsername: `<Add the GitHub Username for your Bot Account Here>`,
+      repoDetails: {
+        owner: "<Add the repo owner, i.e. GoogleChrome>",
+        repo: "<Add the repo name, i.e. workbox>"
+      },
       plugins: [
         new prbot.plugins.Size({
           globPattern: '**/*.js',
