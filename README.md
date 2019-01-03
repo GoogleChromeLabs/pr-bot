@@ -88,7 +88,7 @@ You can see what `pr-bot` will do locally with the following:
 
 ```shell
 npm install --global pr-bot
-pr-bot
+GITHUB_TOKEN=<Your bot's personal access token> pr-bot
 ```
 
 This is useful if you want to see the file differences without
