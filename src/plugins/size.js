@@ -26,11 +26,12 @@ const POSITIVE_EMOJI = '✅';
 const NEGATIVE_EMOJI = '🚫';
 
 class SizePlugin extends PluginInterface {
-  constructor({globPattern, globOptions} = {}) {
+  constructor({globPattern, globOptions, transformFilePath} = {}) {
     super('PR-Bot Size Plugin');
 
     this._globPattern = globPattern;
     this._globOptions = globOptions;
+    this._transformFilePath = transformFilePath;
   }
 
   run({beforePath, afterPath} = {}) {
@@ -107,8 +108,9 @@ class SizePlugin extends PluginInterface {
             const fileContents = fs.readFileSync(filePath);
             const gzippedSize = gzipSize.sync(fileContents);
             const relativePath = path.relative(directory, filePath);
-            fileInfo[relativePath] = {
-              relativePath,
+            const transformedRelativePath = this._transformFilePath ? this._transformFilePath(relativePath) : relativePath;
+            fileInfo[transformedRelativePath] = {
+              relativePath: transformedRelativePath,
               sizeInBytes: stats.size,
               gzipSizeInBytes: gzippedSize,
             };

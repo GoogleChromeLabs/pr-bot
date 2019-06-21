@@ -79,7 +79,8 @@ stays-the-same.txt    29 B       >  50 B       +72%
 
 New Files
 ---------
-new-file.txt  21 B
+hashed.asdf123.txt  1.67 KB
+new-file.txt        21 B
 `);
 
       expect(results.markdownLog).to.exist;
@@ -100,7 +101,8 @@ new-file.txt  21 B
 
 | File | Size | GZipped |
 | --- | --- | --- |
-| new-file.txt | 21 B | 41 B |
+| hashed.asdf123.txt | 1.67 KB | 475 B |
+| new-file.txt       | 21 B    | 41 B |
 
 #### All File Sizes
 
@@ -113,6 +115,7 @@ new-file.txt  21 B
 | dino.jpg             | 268.63 KB | 104.00 KB | -61%       | 103.24 KB | 🎉 |
 | empty-to-content.txt | 0 B       | 38 B      | +Infinity% | 56 B      | ☠️ |
 | empty.txt            | 0 B       | 0 B       |            | 20 B      | |
+| hashed.asdf123.txt   |           | 1.67 KB   |            | 475 B     | |
 | minor-change.txt     | 7.13 KB   | 7.13 KB   | -0%        | 2.52 KB   | |
 | new-file.txt         |           | 21 B      |            | 41 B      | |
 | stays-the-same.txt   | 29 B      | 50 B      | +72%       | 67 B      | ☠️ |
@@ -168,6 +171,7 @@ No new files have been added.
 | dino.jpg             | 104.00 KB | 104.00 KB | 0% | 103.24 KB | |
 | empty-to-content.txt | 38 B      | 38 B      | 0% | 56 B      | |
 | empty.txt            | 0 B       | 0 B       |    | 20 B      | |
+| hashed.asdf123.txt   | 1.67 KB   | 1.67 KB   | 0% | 475 B     | |
 | minor-change.txt     | 7.13 KB   | 7.13 KB   | 0% | 2.52 KB   | |
 | new-file.txt         | 21 B      | 21 B      | 0% | 41 B      | |
 | stays-the-same.txt   | 50 B      | 50 B      | 0% | 67 B      | |
@@ -175,6 +179,81 @@ No new files have been added.
 </details>`);
     });
   })
+
+
+  it.only('should handle hashed files', function() {
+    const plugin = new SizePlugin({
+      globPattern: '**/*',
+      transformFilePath: (path) => path.replace(/(.+?\.)(.+?\.)?(txt|jpg)/i, '$1$3'),
+    });
+    return plugin.run({
+      beforePath: path.join(__dirname, '..', '..', 'static', 'size-example-before'),
+      afterPath: path.join(__dirname, '..', '..', 'static', 'size-example-after'),
+    })
+    .then((results) => {
+      expect(results.prettyLog).to.exist;
+
+      console.log(results.prettyLog);
+
+      // Print all logs when nothings changed.
+      const cleanLog = results.prettyLog.replace(
+        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+        '');
+      expect(cleanLog).to.equal(`
+Changed File Sizes
+------------------
+content-to-empty.txt  45 B       >  0 B        -100%
+dino.jpg              268.63 KB  >  104.00 KB  -61%
+empty-to-content.txt  0 B        >  38 B       +Infinity%
+hashed.txt            834 B      >  1.67 KB    +100%
+minor-change.txt      7.13 KB    >  7.13 KB    -0%
+stays-the-same.txt    29 B       >  50 B       +72%
+
+New Files
+---------
+new-file.txt  21 B
+`);
+
+      expect(results.markdownLog).to.exist;
+
+      console.log(results.markdownLog);
+
+      expect(results.markdownLog).to.equal(`#### Changed File Sizes
+
+| File | Before | After | Change | GZipped |  |
+| --- | --- | --- | --- | --- | --- |
+| content-to-empty.txt | 45 B      | 0 B       | -100%      | 20 B      | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61%       | 103.24 KB | 🎉 |
+| empty-to-content.txt | 0 B       | 38 B      | +Infinity% | 56 B      | ☠️ |
+| hashed.txt           | 834 B     | 1.67 KB   | +100%      | 475 B     | ☠️ |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0%        | 2.52 KB   | |
+| stays-the-same.txt   | 29 B      | 50 B      | +72%       | 67 B      | ☠️ |
+
+#### New Files
+
+| File | Size | GZipped |
+| --- | --- | --- |
+| new-file.txt | 21 B | 41 B |
+
+#### All File Sizes
+
+<details>
+<summary>View Table</summary>
+
+| File | Before | After | Change | GZipped |  |
+| --- | --- | --- | --- | --- | --- |
+| content-to-empty.txt | 45 B      | 0 B       | -100%      | 20 B      | 🎉 |
+| dino.jpg             | 268.63 KB | 104.00 KB | -61%       | 103.24 KB | 🎉 |
+| empty-to-content.txt | 0 B       | 38 B      | +Infinity% | 56 B      | ☠️ |
+| empty.txt            | 0 B       | 0 B       |            | 20 B      | |
+| hashed.txt           | 834 B     | 1.67 KB   | +100%      | 475 B     | ☠️ |
+| minor-change.txt     | 7.13 KB   | 7.13 KB   | -0%        | 2.52 KB   | |
+| new-file.txt         |           | 21 B      |            | 41 B      | |
+| stays-the-same.txt   | 29 B      | 50 B      | +72%       | 67 B      | ☠️ |
+
+</details>`);
+    });
+  });
 
   it('should return 1KB', function() {
     const result = SizePlugin._convertSize(1000);
